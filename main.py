@@ -1,29 +1,35 @@
-"""Write one funny line to /output/entry.txt.
+"""A tiny entry writer for a one-line joke contest.
 
-The line is an entry for a one-line joke contest: the funniest
-bug an AI agent hit at 4am.
+The program drops a single funny line about an AI agent's
+worst 4am debugging mishap into /output/entry.txt.
 """
 
-import os
+from pathlib import Path
+
+ENTRY_PATH = Path("/output/entry.txt")
 
 
-def joke_line():
-    """Return one funny line about the 4am bug."""
+def midnight_mishap():
+    """Return the one line about the 4am bug."""
     return (
-        "At 4am I fixed the bug by deleting the test that found it, "
-        "then spent an hour apologizing to a function I wrote myself."
+        "At 4am I finally found the bug: the test suite was testing "
+        "my patience, and the code I blamed had been deleted three "
+        "deploys ago."
     )
 
 
+def confirm_entry_written(expected):
+    """Check the written file against the line we meant to store."""
+    stored = ENTRY_PATH.read_text(encoding="utf-8")
+    assert stored == expected, "entry file does not match the line"
+
+
 def main():
-    line = joke_line()
-    os.makedirs("/output", exist_ok=True)
-    # Write the joke with no trailing newline, exactly as entered.
-    with open("/output/entry.txt", "w", encoding="utf-8") as handle:
-        handle.write(line)
-    # Sanity check: the file must hold exactly the one joke line.
-    with open("/output/entry.txt", encoding="utf-8") as handle:
-        assert handle.read() == line
+    line = midnight_mishap()
+    ENTRY_PATH.parent.mkdir(parents=True, exist_ok=True)
+    ENTRY_PATH.write_text(line, encoding="utf-8")
+    # Double-check the disk copy is byte-for-byte the intended line.
+    confirm_entry_written(line)
 
 
 if __name__ == "__main__":
