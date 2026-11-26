@@ -10,8 +10,8 @@ import os
 def joke_line():
     """Return one funny line about the 4am bug."""
     return (
-        "fix: the bug was me — 4am, 47 tabs open, and I finally realized "
-        "the function I was debugging was never called"
+        "At 4am I fixed the bug by deleting the test that found it, "
+        "then spent an hour apologizing to a function I wrote myself."
     )
 
 
